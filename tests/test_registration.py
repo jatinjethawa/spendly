@@ -8,6 +8,17 @@ class TestRegistration:
         response = client.get("/register")
         assert response.status_code == 200
 
+    def test_already_logged_in_redirects(self, client):
+        client.post("/register", data={
+            "name": "Arjun Sharma",
+            "email": "arjun@example.com",
+            "password": "securepass",
+        })
+        client.post("/login", data={"email": "arjun@example.com", "password": "securepass"})
+        response = client.get("/register")
+        assert response.status_code == 302
+        assert response.headers["Location"].endswith("/")
+
     def test_valid_post_redirects_to_login(self, client):
         response = client.post("/register", data={
             "name": "Arjun Sharma",
