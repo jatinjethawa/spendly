@@ -10,3 +10,11 @@ def db_conn(tmp_path, monkeypatch):
     conn = db_module.get_db()
     yield conn
     conn.close()
+
+
+@pytest.fixture
+def client(db_conn, monkeypatch):
+    import app as app_module
+    app_module.app.config["TESTING"] = True
+    with app_module.app.test_client() as c:
+        yield c
