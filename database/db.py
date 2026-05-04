@@ -66,6 +66,76 @@ def get_user_by_email(email):
         conn.close()
 
 
+def get_user_by_id(user_id):
+    conn = get_db()
+    try:
+        return conn.execute(
+            "SELECT id, name, email, created_at FROM users WHERE id = ?",
+            (user_id,),
+        ).fetchone()
+    finally:
+        conn.close()
+
+
+def get_user_stats(user_id):
+    conn = get_db()
+    try:
+        total = conn.execute(
+            "SELECT COALESCE(SUM(amount), 0) FROM expenses WHERE user_id = ?",
+            (user_id,),
+        ).fetchone()[0]
+        count = conn.execute(
+            "SELECT COUNT(*) FROM expenses WHERE user_id = ?",
+            (user_id,),
+        ).fetchone()[0]
+        top = conn.execute(
+            """SELECT c.name FROM expenses e
+               JOIN categories c ON c.id = e.category_id
+               WHERE e.user_id = ?
+               GROUP BY c.id ORDER BY SUM(e.amount) DESC LIMIT 1""",
+            (user_id,),
+        ).fetchone()
+        return {
+            "total_spent": total,
+            "transaction_count": count,
+            "top_category": top["name"] if top else "—",
+        }
+    finally:
+        conn.close()
+
+
+def get_recent_expenses(user_id, limit=5):
+    conn = get_db()
+    try:
+        return conn.execute(
+            """SELECT e.date, e.description, e.amount, c.name AS category
+               FROM expenses e
+               JOIN categories c ON c.id = e.category_id
+               WHERE e.user_id = ?
+               ORDER BY e.date DESC, e.id DESC
+               LIMIT ?""",
+            (user_id, limit),
+        ).fetchall()
+    finally:
+        conn.close()
+
+
+def get_expenses_by_category(user_id):
+    conn = get_db()
+    try:
+        return conn.execute(
+            """SELECT c.name, SUM(e.amount) AS total
+               FROM expenses e
+               JOIN categories c ON c.id = e.category_id
+               WHERE e.user_id = ?
+               GROUP BY c.id
+               ORDER BY total DESC""",
+            (user_id,),
+        ).fetchall()
+    finally:
+        conn.close()
+
+
 def create_user(name, email, password_hash):
     conn = get_db()
     try:

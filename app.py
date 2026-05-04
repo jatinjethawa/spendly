@@ -1,7 +1,8 @@
 
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, abort
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.db import init_db, email_exists, create_user, get_user_by_email
+from database.db import init_db, email_exists, create_user, get_user_by_email, get_user_by_id, get_user_stats, get_recent_expenses, get_expenses_by_category
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-change-in-production"
@@ -86,7 +87,36 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+    uid = session["user_id"]
+    user = get_user_by_id(uid)
+    if user is None:
+        abort(404)
+    dt = datetime.strptime(user["created_at"][:10], "%Y-%m-%d")
+    member_since = dt.strftime("%d %b %Y")
+    stats = get_user_stats(uid)
+    raw_recent = get_recent_expenses(uid)
+    recent = [
+        {
+            "date": datetime.strptime(r["date"], "%Y-%m-%d").strftime("%d %b %Y"),
+            "description": r["description"],
+            "amount": r["amount"],
+            "category": r["category"],
+        }
+        for r in raw_recent
+    ]
+    by_category = get_expenses_by_category(uid)
+    max_cat_amount = by_category[0]["total"] if by_category else 1
+    return render_template(
+        "profile.html",
+        user=user,
+        member_since=member_since,
+        stats=stats,
+        recent=recent,
+        by_category=by_category,
+        max_cat_amount=max_cat_amount,
+    )
 
 
 @app.route("/expenses/add")
