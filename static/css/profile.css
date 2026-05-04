@@ -1,0 +1,262 @@
+/* static/css/profile.css */
+
+.profile-page {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 32px 24px 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── User card ─────────────────────────────────────────── */
+
+.profile-user-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper-card);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+}
+
+.profile-name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+}
+
+.profile-email {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    margin-bottom: 2px;
+}
+
+.profile-since {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+}
+
+/* ── Stats row ─────────────────────────────────────────── */
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.stat-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.stat-value--display {
+    font-family: var(--font-display);
+    font-weight: 400;
+}
+
+/* ── Bottom two-column layout ──────────────────────────── */
+
+.profile-bottom {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 16px;
+    align-items: start;
+}
+
+.profile-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+}
+
+.card-title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--ink);
+    margin-bottom: 16px;
+}
+
+/* ── Transactions table ────────────────────────────────── */
+
+.tx-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.tx-table th {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.tx-table td {
+    padding: 11px 8px;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--border-soft);
+    vertical-align: middle;
+}
+
+.tx-table tbody tr:last-child td { border-bottom: none; }
+.tx-table tbody tr:hover td { background: var(--paper); }
+
+.tx-date {
+    color: var(--ink-muted);
+    white-space: nowrap;
+    font-size: 0.82rem;
+}
+
+.tx-amount-col { text-align: right; }
+
+.tx-amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* ── Category badges ───────────────────────────────────── */
+
+.cat-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    background: var(--border-soft);
+    color: var(--ink-muted);
+}
+
+.cat-badge[data-cat="Food"]          { background: var(--accent-light);   color: var(--accent); }
+.cat-badge[data-cat="Transport"]     { background: var(--accent-2-light); color: var(--accent-2); }
+.cat-badge[data-cat="Shopping"]      { background: var(--accent-2-light); color: var(--accent-2); }
+.cat-badge[data-cat="Health"]        { background: var(--accent-light);   color: var(--accent); }
+.cat-badge[data-cat="Bills"]         { background: var(--paper-warm);     color: var(--ink-soft); }
+.cat-badge[data-cat="Entertainment"] { background: var(--paper-warm);     color: var(--ink-soft); }
+.cat-badge[data-cat="Other"]         { background: var(--border-soft);    color: var(--ink-muted); }
+
+/* ── By category breakdown ─────────────────────────────── */
+
+.cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cat-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+}
+
+.cat-row-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+}
+
+.cat-row-amount {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.cat-bar-track {
+    height: 5px;
+    background: var(--border-soft);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.cat-bar {
+    height: 100%;
+    border-radius: 99px;
+    background: var(--ink-muted);
+}
+
+.cat-bar[data-cat="Food"]          { background: var(--accent); }
+.cat-bar[data-cat="Transport"]     { background: var(--accent-2); }
+.cat-bar[data-cat="Shopping"]      { background: var(--accent-2); }
+.cat-bar[data-cat="Health"]        { background: var(--accent); }
+.cat-bar[data-cat="Bills"]         { background: var(--ink-muted); }
+.cat-bar[data-cat="Entertainment"] { background: var(--ink-muted); }
+.cat-bar[data-cat="Other"]         { background: var(--ink-faint); }
+
+/* ── Empty state ───────────────────────────────────────── */
+
+.empty-state {
+    font-size: 0.875rem;
+    color: var(--ink-muted);
+    text-align: center;
+    padding: 24px 0;
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .profile-bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .profile-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-user-card {
+        padding: 20px;
+    }
+
+    .tx-table th:nth-child(1),
+    .tx-table td:nth-child(1) {
+        display: none;
+    }
+}
